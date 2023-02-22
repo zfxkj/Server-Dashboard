@@ -1,10 +1,15 @@
 # server.py
 from flask import Flask, render_template, jsonify
-import psutil,os,datetime,platform,getpass,socket,multiprocessing
+import psutil,os,datetime,platform,getpass,socket
 from flask_socketio import SocketIO, emit
 
 app = Flask(__name__)
 socketio = SocketIO(app)
+
+global net_up,net_do
+net_up = -1
+net_do = -1
+
 
 @app.route('/')
 def index():
@@ -12,7 +17,10 @@ def index():
 
 @socketio.on('get_info')
 def get_info():
-    # # 获取SWAP信息
+    global net_up,net_do
+    # cpu线程数
+    thread_count = psutil.cpu_count()
+    # 获取SWAP信息
     swap = psutil.swap_memory()
 
     # 获取SWAP总量
@@ -34,7 +42,7 @@ def get_info():
         cpu_temp = "0"
 
     # 获取cpu内核数
-    num_cpus = multiprocessing.cpu_count()
+    num_cpus = psutil.cpu_count(logical=False)
 
     # 获取本机IP
     hostname = socket.gethostname()
@@ -67,6 +75,7 @@ def get_info():
 
     # 获取内存大小及内存使用量
     memory = psutil.virtual_memory()
+    mem_sy = int(memory.available / (1024.0 ** 2))
     total_memory = round(memory.total / (1024.0 ** 3), 2)
     memory_usage = round(memory.used / (1024.0 ** 3) / total_memory * (10 ** 2), 2)
 
@@ -74,10 +83,21 @@ def get_info():
     net_io_counters = psutil.net_io_counters()
     total_upload = round(net_io_counters.bytes_sent / (1024.0 ** 3), 2)
     total_download = round(net_io_counters.bytes_recv / (1024.0 ** 3), 2)
-
+    upload = round(net_io_counters.bytes_sent/(1024**2), 3)
+    download = round(net_io_counters.bytes_recv / (1024.0 ** 2), 3)
+    if net_do == -1 and net_up == -1:
+        net_do = download
+        net_up = upload
+    else:
+        net_do_rec = round(abs(net_do-download),2)
+        net_up_rec = round(abs(net_up-upload),2)
+        net_do = download
+        net_up = upload
     # 获取负载
     # load = os.getloadavg()
-    load = psutil.getloadavg()
+    load = 0.0
+    for load1 in psutil.getloadavg():
+        load += load1
 
     # cpu使用率
     cpu_percent = psutil.cpu_percent(interval=1)
@@ -133,7 +153,11 @@ def get_info():
         'version': version,
         'cpu_used': cpu_percent,
         'swap_size': swap_total,
-        'swap_used': swap_percent
+        'swap_used': swap_percent,
+        'thread_count': thread_count,
+        'mem_sy': mem_sy,
+        'net_upload':net_up_rec,
+        'net_download':net_do_rec
     }
 
     emit('response', data)
