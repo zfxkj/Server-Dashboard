@@ -127,7 +127,7 @@
 
         <div class="container">
             <div class="row">
-                <div class="col-md-3">
+                <div class="col-md-cbl">
                     <div style="text-align: center; padding: 20px 0">
                         <img id="logo_pp" src="/static/images/raspberry-pi.png" />
                     </div>
@@ -242,7 +242,7 @@
                                     <div class="text-center" style="padding: 2px 0 2px 0; background-color: #cdfd9f">
                                         <strong><small>CPU</small></strong>
                                     </div>
-                                    <div class="col-md-3 col-sm-3 col-xs-3" style="padding: 0">
+                                    <div class="col-md-cpu col-sm-cpu col-xs-3" style="padding: 0">
                                         <div class="text-center" style="
                           padding: 10px 0 10px 0;
                           background-color: #fffecd;
@@ -251,12 +251,12 @@
                                                 class="label">MHz</small>
                                         </div>
                                     </div>
-                                    <div class="col-md-3 col-sm-3 col-xs-3" style="padding: 0">
+                                    <div class="col-md-cpu col-sm-cpu col-xs-3" style="padding: 0">
                                         <div class="text-center" style="padding: 10px 0 10px 0">
                                             <span id="cpu-count"></span><br /><small class="label">核心数</small>
                                         </div>
                                     </div>
-                                    <div class="col-md-3 col-sm-3 col-xs-3" style="padding: 0">
+                                    <div class="col-md-cpu col-sm-cpu col-xs-3" style="padding: 0">
                                         <div class="text-center" style="
                           padding: 10px 0 10px 0;
                           background-color: #fdcccb;
@@ -265,7 +265,7 @@
                                                 class="label">C°</small>
                                         </div>
                                     </div>
-                                    <div class="col-md-3 col-sm-3 col-xs-3" style="padding: 0">
+                                    <div class="col-md-cpu col-sm-cpu col-xs-3" style="padding: 0">
                                         <div class="text-center" style="
                           padding: 10px 0 10px 0;
                           background-color: #9bcefd;
@@ -475,64 +475,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3 col-sm-3 col-xs-6">
-                            <div id="container-mem-real" style="width: 100%; height: 100px"></div>
-                            <script>
-                                $(document).ready(function () {
-                                    var mychart = echarts.init(
-                                        document.getElementById("container-mem-real")
-                                    );
-                                    var time_s = [];
-                                    var cpu_bfb = [];
-
-                                    setInterval(function () {
-                                        var now = new Date(); // 获取当前时间
-                                        var seconds = now.getSeconds(); // 获取当前秒数
-                                        time_s.push(seconds);
-                                        cpu_bfb.push(window.cpu_used);
-                                        if (time_s.length > 10 || cpu_bfb.length > 10) {
-                                            time_s.shift(); // 删除第一个元素
-                                            cpu_bfb.shift();
-                                        }
-                                        var option = {
-                                            color: ["#CDFD9F"],
-                                            xAxis: {
-                                                type: "category",
-                                                data: time_s,
-                                            },
-                                            yAxis: {
-                                                type: "value",
-                                            },
-                                            series: [
-                                                {
-                                                    data: cpu_bfb,
-                                                    type: "line",
-                                                },
-                                            ],
-                                        };
-                                        mychart.setOption(option);
-                                    }, 1000);
-                                });
-                            </script>
-                            <div style="height: 90px">
-                                <div class="row" style="margin: 0; background-color: #e0e0e0">
-                                    <div class="text-center" style="padding: 2px 0 2px 0; background-color: #cdfd9f">
-                                        <strong><small>REAL MEMORY</small></strong>
-                                    </div>
-                                    <div class="col-md-6 col-sm-6 col-xs-6" style="padding: 0">
-                                        <div class="text-center" style="padding: 10px 0 10px 0">
-                                            <span id="mem-real-percent">0</span>%<br /><small class="label">USED</small>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 col-sm-6 col-xs-6"
-                                        style="padding: 0; background-color: #cdfd9f">
-                                        <div class="text-center" style="padding: 10px 0 10px 0">
-                                            <span id="mem-real-free">0</span>MB<br /><small class="label">FREE</small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        
                         <div class="col-md-3 col-sm-3 col-xs-6">
                             <div id="container-swap" style="width: 100%; height: 100px"></div>
                             <script>
@@ -705,11 +648,11 @@
                                 </div>
                                 <div class="col-md-2 col-sm-2 col-xs-2" style="padding: 0">
                                     <div style="height: 80px; margin-top: 10px">
-                                        <div class="text-center"
+                                        <!-- <div class="text-center"
                                             style="padding: 2px 0 2px 0; background-color: #cccccc">
                                             <strong><span id="net-interface-in">
                                                 </span></strong>
-                                        </div>
+                                        </div> -->
                                         <div class="text-center" style="
                           padding: 10px 0 10px 0;
                           background-color: #9bcefd;

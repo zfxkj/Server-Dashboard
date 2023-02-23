@@ -46,7 +46,7 @@ def get_info():
             cpu_info = psutil.cpu_info()
             cpu_name = cpu_info[0].model
         except:
-            cpu_name = "暂时无法获取"
+            cpu_name = "CPU名称时无法获取"
 
         # 获取CPU温度
         try:
