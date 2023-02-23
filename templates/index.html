@@ -24,10 +24,10 @@
                 $("#os").text(data.system_name);
                 $("#cpu-stat-sys").text(data.cpu_arch);
                 $("#mem-percent").text(mem_used);
-                $("#total_upload").text(data.total_upload);
                 upload = data.total_upload;
-                $("#total_download").text(data.total_download);
                 download = data.total_download;
+                $("#total_upload").text(upload);
+                $("#total_download").text(download);
                 $("#cpu-stat-sirq").text(data.load);
                 $("#cpu-stat-iow").text(data.process_count);
                 $("#cpu-stat-irq").text(data.connection_count);
@@ -41,17 +41,18 @@
                 $("#cpu-freq").text(data.cpu_freq);
                 $("#cpu-count").text(data.cpu_sums);
                 $("#cpu-temp").text(data.cpu_temp);
-                $("#cpu-model").text(data.cpu_model);
+                $("#cpu-model").text(data.cpu_name);
+                $("#mem-end").text(data.cpu_model);
                 $("#disk-free").text(data.disk_free);
-                $("#disk-percent").text(data.disk_percent);
                 disk_bfb = data.disk_percent;
+                $("#disk-percent").text(disk_bfb);
                 $("#cpu-stat-idl").text(data.cpu_kx);
                 $("#version").text(data.version);
-                $("#cpu-stat-use").text(data.cpu_used);
                 cpu_used = data.cpu_used;
+                $("#cpu-stat-use").text(cpu_used);
                 $("#mem-free").text(data.total_memory);
-                $("#mem-swap-percent").text(data.swap_used);
                 swap_used = data.swap_used;
+                $("#mem-swap-percent").text(swap_used);
                 $("#mem-swap-free").text(data.swap_size);
                 $("#cpu-stat-nic").text(data.thread_count);
                 $("#mem-cached").text(data.mem_sy);
@@ -59,6 +60,7 @@
                 net_download = data.net_download
                 $("#net-interface-total-out").text(net_upload);
                 $("#net-interface-total-in").text(net_download);
+                $("#mem-swap-total").text(data.cached);
                 if (data.code != 200){
                     $("#pimodel").text(data.text);
                 }else{
@@ -393,32 +395,12 @@
                           padding: 10px 0 10px 0;
                           background-color: #cccdfc;
                         ">
-                                            <span id="mem-swap-total">0</span>MB<br /><small class="label">SWAP</small>
+                                            <span id="mem-swap-total"></span>MB<br /><small class="label">CACHED</small>
                                         </div>
                                     </div>
-                                    <div class="col-md-3 col-sm-3 col-xs-3" style="padding: 0">
-                                        <div class="text-center" style="padding: 10px 0 10px 0">
-                                            <span id="loadavg-1m">0.0</span><br /><small class="label">AVG.1M</small>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3 col-sm-3 col-xs-3" style="padding: 0">
-                                        <div class="text-center" style="padding: 10px 0 10px 0">
-                                            <span id="loadavg-5m">0.0</span><br /><small class="label">AVG.5M</small>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3 col-sm-3 col-xs-3" style="padding: 0">
-                                        <div class="text-center" style="padding: 10px 0 10px 0">
-                                            <span id="loadavg-10m">0.0</span><br /><small class="label">AVG.10M</small>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3 col-sm-3 col-xs-3" style="padding: 0">
-                                        <div class="text-center" style="
-                          padding: 10px 0 10px 0;
-                          background-color: #fffdcf;
-                        ">
-                                            <strong><span id="loadavg-running">0</span>/<span
-                                                    id="loadavg-threads">0</span></strong><br /><small
-                                                class="label">RUNNING</small>
+                                    <div class="col-md-12" style="min-height: 52px">
+                                        <div class="text-center" style="padding: 10px 0 10px 0; margin: auto 0">
+                                            <span id="mem-end" class="label"></span>&nbsp;
                                         </div>
                                     </div>
                                 </div>

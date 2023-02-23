@@ -24,6 +24,11 @@ def get_info():
         # 获取SWAP信息
         swap = psutil.swap_memory()
 
+        # 获取cached
+        try:
+            mem_cached = round(swap.cached / (1024.0 ** 2), 2)
+        except:
+            mem_cached = 0
         # 获取SWAP总量
         swap_total = round(swap.total / (1024.0 ** 2), 2)
 
@@ -35,6 +40,13 @@ def get_info():
 
         # 获取cpu类型
         cpu_model = platform.processor()
+
+        # 获取cpu名称
+        try:
+            cpu_info = psutil.cpu_info()
+            cpu_name = cpu_info[0].model
+        except:
+            cpu_name = "暂时无法获取"
 
         # 获取CPU温度
         try:
@@ -160,7 +172,9 @@ def get_info():
             'thread_count': thread_count,
             'mem_sy': mem_sy,
             'net_upload':net_up_rec,
-            'net_download':net_do_rec
+            'net_download':net_do_rec,
+            'cached': mem_cached,
+            'cpu_name': cpu_name
         }
     except Exception as err:
         data = {
