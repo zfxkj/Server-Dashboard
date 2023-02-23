@@ -24,11 +24,10 @@
             );
 
             socket.on("response", function (data) {
-                var memoryData = data.memory_usage;
+                mem_used = data.memory_usage;
                 $("#os").text(data.system_name);
                 $("#cpu-stat-sys").text(data.cpu_arch);
-                $("#mem-percent").text(data.memory_usage);
-                mem_used = data.memory_usage;
+                $("#mem-percent").text(mem_used);
                 $("#total_upload").text(data.total_upload);
                 upload = data.total_upload;
                 $("#total_download").text(data.total_download);
@@ -64,6 +63,11 @@
                 net_download = data.net_download
                 $("#net-interface-total-out").text(net_upload);
                 $("#net-interface-total-in").text(net_download);
+                if (data.code != 200){
+                    $("#pimodel").text(data.text);
+                }else{
+                    document.getElementById("error").style.display = "none";
+                }
             });
 
             setInterval(function () {
@@ -104,11 +108,11 @@
                         <!-- <li><a target="_blank" href="https://docker.zfxkj.top">docker_web</a></li> -->
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                                aria-expanded="false">About <span class="caret"></span></a>
+                                aria-expanded="false">关于<span class="caret"></span></a>
                             <ul class="dropdown-menu" role="menu">
                                 <!-- <li><a target="_blank" href="https://pan.zfxkj.top">ZFX的网盘</a></li> -->
                                 <li>
-                                    <a target="_blank" href="https://github.com/ZFXkj/pi-dashboard">GitHub Source</a>
+                                    <a target="_blank" href="https://github.com/zfxkj/Server-Dashboard">GitHub Source</a>
                                 </li>
                             </ul>
                         </li>
@@ -128,7 +132,7 @@
                 padding: 5px;
                 border-radius: 3px;
               ">
-                        <!-- <div class="text-center" style="margin:10px; padding: 10px 0 10px 0; border-radius: 3px;"><div id="pimodel" style="font-size: 90%; font-weight: bolder; text-shadow: 0 1px 0 #fff;">123</div></div> -->
+                        <div class="text-center" id="error" style="margin:10px; padding: 10px 0 10px 0; border-radius: 3px;">error<br><div id="pimodel" style="font-size: 90%; font-weight: bolder; text-shadow: 0 1px 0 #fff;"></div></div>
                         <div class="text-center" style="
                   margin: 20px;
                   padding: 10px 0 10px 0;
@@ -727,14 +731,14 @@
                           background-color: #9bcefd;
                         ">
                                             <span id="net-interface-total-in">
-                                            </span>MB<br /><small class="label">IN</small>
+                                            </span>MB<br /><small class="label">下载速度</small>
                                         </div>
                                         <div class="text-center" style="
                           padding: 10px 0 10px 0;
                           background-color: #cdfd9f;
                         ">
                                             <span id="net-interface-total-out">
-                                            </span>MB<br /><small class="label">OUT</small>
+                                            </span>MB<br /><small class="label">上传速度</small>
                                         </div>
                                     </div>
                                 </div>
