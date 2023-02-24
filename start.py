@@ -1,6 +1,6 @@
 # server.py
 from flask import Flask, render_template, jsonify
-import psutil,os,datetime,platform,getpass,socket
+import psutil,os,datetime,platform,getpass,socket,subprocess
 from flask_socketio import SocketIO, emit
 
 app = Flask(__name__)
@@ -43,8 +43,7 @@ def get_info():
 
         # 获取cpu名称
         try:
-            cpu_info = psutil.cpu_info()
-            cpu_name = cpu_info[0].model
+            cpu_name = platform.platform()
         except:
             cpu_name = "CPU名称时无法获取"
 
@@ -137,7 +136,7 @@ def get_info():
         date_time = datetime.datetime.now().strftime("%H:%M:%S")
         
         # 获取CPU频率，单位为MHz
-        freq = psutil.cpu_freq().current
+        freq = int(psutil.cpu_freq().current)
 
         data = {
             'code': 200,
