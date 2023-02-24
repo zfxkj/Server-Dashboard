@@ -24,11 +24,11 @@ def get_info():
         # 获取SWAP信息
         swap = psutil.swap_memory()
 
-        # 获取cached
-        try:
-            mem_cached = round(swap.cached / (1024.0 ** 2), 2)
-        except:
-            mem_cached = 0
+        # 获取磁盘吞吐量
+        disk_io_counters = psutil.disk_io_counters()
+        disk_read = round(disk_io_counters.read_bytes / (1024**2), 1)
+        disk_write = round(disk_io_counters.write_bytes /(1024**2) ,1)
+        disk_io = str(disk_read) + "MB|" +str(disk_write) + "MB"
         # 获取SWAP总量
         swap_total = round(swap.total / (1024.0 ** 2), 2)
 
@@ -174,7 +174,7 @@ def get_info():
             'mem_sy': mem_sy,
             'net_upload':net_up_rec,
             'net_download':net_do_rec,
-            'cached': mem_cached,
+            'cached': disk_io,
             'cpu_name': cpu_name
         }
     except Exception as err:
