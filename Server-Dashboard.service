@@ -1,0 +1,14 @@
+[Unit]
+Description=服务器信息
+After=network.target
+
+[Service]
+Type=simple
+User=zfx
+Restart=on-failure
+RestartSec=5s
+WorkingDirectory=/home/zfx/Server-Dashboard
+ExecStart=/usr/bin/python3 ./start.py
+
+[Install]
+WantedBy=multi-user.target
