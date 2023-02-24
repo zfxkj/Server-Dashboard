@@ -14,9 +14,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.0/socket.io.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.1/dist/echarts.min.js"></script>
     <script>
-        setInterval(function() {
+        setInterval(function () {
+            if (window.location.protocol == 'http:') {
+                var req = "http";
+            } else if (window.location.protocol == 'https:') {
+                var req = "https";
+            }
             var xhr = new XMLHttpRequest();
-            xhr.open('POST', "http://" + document.domain + ":" + location.port + "/get_info");
+            xhr.open('POST', req + "://" + document.domain + ":" + location.port + "/get_info");
             xhr.onload = function () {
                 if (xhr.status === 200) {
                     var data = JSON.parse(xhr.responseText);
