@@ -1,10 +1,8 @@
 # server.py
 from flask import Flask, render_template, jsonify
 import psutil,os,datetime,platform,getpass,socket,subprocess
-from flask_socketio import SocketIO, emit
 
 app = Flask(__name__)
-socketio = SocketIO(app)
 
 global net_up,net_do
 net_up = -1
@@ -15,7 +13,7 @@ net_do = -1
 def index():
     return render_template('index.html')
 
-@socketio.on('get_info')
+@app.route('/get_info', methods=["POST"])
 def get_info():
     try:
         global net_up,net_do
@@ -102,6 +100,8 @@ def get_info():
         if net_do == -1 and net_up == -1:
             net_do = download
             net_up = upload
+            net_do_rec = net_do
+            net_up_rec = net_up
         else:
             net_do_rec = round(abs(net_do-download),2)
             net_up_rec = round(abs(net_up-upload),2)
@@ -182,7 +182,7 @@ def get_info():
             'code': 404,
             'text': str(err)
         }
-    emit('response', data)
+    return data
 
 if __name__ == '__main__':
-    socketio.run(app, host='::', port=5219, debug=False)
+    app.run(host='::', port=5219, debug=False)

@@ -14,70 +14,68 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.0/socket.io.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.1/dist/echarts.min.js"></script>
     <script>
-        $(document).ready(function () {
-            var socket = io.connect(
-                "http://" + document.domain + ":" + location.port
-            );
-
-            socket.on("response", function (data) {
-                mem_used = data.memory_usage;
-                $("#os").text(data.system_name);
-                $("#cpu-stat-sys").text(data.cpu_arch);
-                $("#mem-percent").text(mem_used);
-                upload = data.total_upload;
-                download = data.total_download;
-                $("#total_upload").text(upload);
-                $("#total_download").text(download);
-                $("#cpu-stat-sirq").text(data.load);
-                $("#cpu-stat-iow").text(data.process_count);
-                $("#cpu-stat-irq").text(data.connection_count);
-                $("#uptime").text(data.uptime);
-                $("#system_date").text(data.date);
-                $("#system_time").text(data.time);
-                $("#uptime_date").text(data.uptime_date);
-                $("#username").text(data.username);
-                $("#ip").text(data.ip);
-                $("#hostname").text(data.hostname);
-                $("#cpu-freq").text(data.cpu_freq);
-                $("#cpu-count").text(data.cpu_sums);
-                $("#cpu-temp").text(data.cpu_temp);
-                $("#cpu-model").text(data.cpu_model);
-                $("#mem-end").text(data.cpu_name);
-                $("#disk-free").text(data.disk_free);
-                disk_bfb = data.disk_percent;
-                $("#disk-percent").text(disk_bfb);
-                $("#cpu-stat-idl").text(data.cpu_kx);
-                $("#version").text(data.version);
-                cpu_used = data.cpu_used;
-                $("#cpu-stat-use").text(cpu_used);
-                $("#mem-free").text(data.total_memory);
-                swap_used = data.swap_used;
-                $("#mem-swap-percent").text(swap_used);
-                $("#mem-swap-free").text(data.swap_size);
-                $("#cpu-stat-nic").text(data.thread_count);
-                $("#mem-cached").text(data.mem_sy);
-                net_upload = data.net_upload
-                net_download = data.net_download
-                $("#net-interface-total-out").text(net_upload);
-                $("#net-interface-total-in").text(net_download);
-                $("#mem-swap-total").text(data.cached);
-                if (data.code != 200){
-                    $("#pimodel").text(data.text);
-                }else{
-                    document.getElementById("error").style.display = "none";
+        setInterval(function() {
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', "http://" + document.domain + ":" + location.port + "/get_info");
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    var data = JSON.parse(xhr.responseText);
+                    mem_used = data.memory_usage;
+                    $("#os").text(data.system_name);
+                    $("#cpu-stat-sys").text(data.cpu_arch);
+                    $("#mem-percent").text(mem_used);
+                    upload = data.total_upload;
+                    download = data.total_download;
+                    $("#total_upload").text(upload);
+                    $("#total_download").text(download);
+                    $("#cpu-stat-sirq").text(data.load);
+                    $("#cpu-stat-iow").text(data.process_count);
+                    $("#cpu-stat-irq").text(data.connection_count);
+                    $("#uptime").text(data.uptime);
+                    $("#system_date").text(data.date);
+                    $("#system_time").text(data.time);
+                    $("#uptime_date").text(data.uptime_date);
+                    $("#username").text(data.username);
+                    $("#ip").text(data.ip);
+                    $("#hostname").text(data.hostname);
+                    $("#cpu-freq").text(data.cpu_freq);
+                    $("#cpu-count").text(data.cpu_sums);
+                    $("#cpu-temp").text(data.cpu_temp);
+                    $("#cpu-model").text(data.cpu_model);
+                    $("#mem-end").text(data.cpu_name);
+                    $("#disk-free").text(data.disk_free);
+                    disk_bfb = data.disk_percent;
+                    $("#disk-percent").text(disk_bfb);
+                    $("#cpu-stat-idl").text(data.cpu_kx);
+                    $("#version").text(data.version);
+                    cpu_used = data.cpu_used;
+                    $("#cpu-stat-use").text(cpu_used);
+                    $("#mem-free").text(data.total_memory);
+                    swap_used = data.swap_used;
+                    $("#mem-swap-percent").text(swap_used);
+                    $("#mem-swap-free").text(data.swap_size);
+                    $("#cpu-stat-nic").text(data.thread_count);
+                    $("#mem-cached").text(data.mem_sy);
+                    net_upload = data.net_upload
+                    net_download = data.net_download
+                    $("#net-interface-total-out").text(net_upload);
+                    $("#net-interface-total-in").text(net_download);
+                    $("#mem-swap-total").text(data.cached);
+                    if (data.code != 200) {
+                        $("#pimodel").text(data.text);
+                    } else {
+                        document.getElementById("error").style.display = "none";
+                    }
+                    if (data.system_name == "Windows") {
+                        document.getElementById("logo_pp").setAttribute("src", "/static/images/windows.png");
+                    }
+                    else if (data.system_name == "Linux") {
+                        document.getElementById("logo_pp").setAttribute("src", "/static/images/linux.png");
+                    }
                 }
-                if (data.system_name == "Windows"){
-                    document.getElementById("logo_pp").setAttribute("src", "/static/images/windows.png");
-                }
-                else if (data.system_name == "Linux") {
-                    document.getElementById("logo_pp").setAttribute("src", "/static/images/linux.png");
-                }
-            });
-
-            setInterval(function () {
-                socket.emit("get_info");
-            }, 1000);
-        });
+            };
+            xhr.send();
+        }, 1000);
     </script>
     <style type="text/css">
         .label {
@@ -116,7 +114,8 @@
                             <ul class="dropdown-menu" role="menu">
                                 <!-- <li><a target="_blank" href="https://pan.zfxkj.top">ZFX的网盘</a></li> -->
                                 <li>
-                                    <a target="_blank" href="https://github.com/zfxkj/Server-Dashboard">GitHub Source</a>
+                                    <a target="_blank" href="https://github.com/zfxkj/Server-Dashboard">GitHub
+                                        Source</a>
                                 </li>
                             </ul>
                         </li>
@@ -136,7 +135,11 @@
                 padding: 5px;
                 border-radius: 3px;
               ">
-                        <div class="text-center" id="error" style="margin:10px; padding: 10px 0 10px 0; border-radius: 3px;">error<br><div id="pimodel" style="font-size: 90%; font-weight: bolder; text-shadow: 0 1px 0 #fff;"></div></div>
+                        <div class="text-center" id="error"
+                            style="margin:10px; padding: 10px 0 10px 0; border-radius: 3px;">error<br>
+                            <div id="pimodel" style="font-size: 90%; font-weight: bolder; text-shadow: 0 1px 0 #fff;">
+                            </div>
+                        </div>
                         <div class="text-center" style="
                   margin: 20px;
                   padding: 10px 0 10px 0;
@@ -441,7 +444,7 @@
                                             },
                                             series: [
                                                 {
-                                                    color :'#E0E0E0',
+                                                    color: '#E0E0E0',
                                                     data: cpu_bfb,
                                                     type: "line",
                                                 },
@@ -475,7 +478,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="col-md-3 col-sm-3 col-xs-6">
                             <div id="container-swap" style="width: 100%; height: 100px"></div>
                             <script>
@@ -598,53 +601,52 @@
                         <div class="col-md-12">
                             <div class="row" style="margin: 0">
                                 <div class="col-md-10 col-sm-10 col-xs-10" style="padding: 0">
-                                    <div id="container-net-interface"
-                                    style="width: 100%; height: 200px"></div>
-                                        <script>
-                                            $(document).ready(function () {
-                                                var mychart = echarts.init(
-                                                    document.getElementById("container-net-interface")
-                                                );
-                                                var time_s = [];
-                                                var cpu_bfb = [];
-                                                var down = [];
-            
-                                                setInterval(function () {
-                                                    var now = new Date(); // 获取当前时间
-                                                    var seconds = now.getSeconds(); // 获取当前秒数
-                                                    time_s.push(seconds);
-                                                    cpu_bfb.push(window.net_upload);
-                                                    down.push(window.net_download);
-                                                    if (time_s.length > 10 || cpu_bfb.length > 10) {
-                                                        time_s.shift(); // 删除第一个元素
-                                                        cpu_bfb.shift();
-                                                        down.shift();
-                                                    }
-                                                    var option = {
-                                                        xAxis: {
-                                                            type: "category",
-                                                            data: time_s,
+                                    <div id="container-net-interface" style="width: 100%; height: 200px"></div>
+                                    <script>
+                                        $(document).ready(function () {
+                                            var mychart = echarts.init(
+                                                document.getElementById("container-net-interface")
+                                            );
+                                            var time_s = [];
+                                            var cpu_bfb = [];
+                                            var down = [];
+
+                                            setInterval(function () {
+                                                var now = new Date(); // 获取当前时间
+                                                var seconds = now.getSeconds(); // 获取当前秒数
+                                                time_s.push(seconds);
+                                                cpu_bfb.push(window.net_upload);
+                                                down.push(window.net_download);
+                                                if (time_s.length > 10 || cpu_bfb.length > 10) {
+                                                    time_s.shift(); // 删除第一个元素
+                                                    cpu_bfb.shift();
+                                                    down.shift();
+                                                }
+                                                var option = {
+                                                    xAxis: {
+                                                        type: "category",
+                                                        data: time_s,
+                                                    },
+                                                    yAxis: {
+                                                        type: "value",
+                                                    },
+                                                    series: [
+                                                        {
+                                                            color: '#CDFD9F',
+                                                            data: cpu_bfb,
+                                                            type: "line",
                                                         },
-                                                        yAxis: {
-                                                            type: "value",
-                                                        },
-                                                        series: [
-                                                            {
-                                                                color :'#CDFD9F',
-                                                                data: cpu_bfb,
-                                                                type: "line",
-                                                            },
-                                                            {
-                                                                color: '#9BCEFD',
-                                                                data: down,
-                                                                type: "line",
-                                                            }
-                                                        ],
-                                                    };
-                                                    mychart.setOption(option);
-                                                }, 1000);
-                                            });
-                                        </script>
+                                                        {
+                                                            color: '#9BCEFD',
+                                                            data: down,
+                                                            type: "line",
+                                                        }
+                                                    ],
+                                                };
+                                                mychart.setOption(option);
+                                            }, 1000);
+                                        });
+                                    </script>
                                 </div>
                                 <div class="col-md-2 col-sm-2 col-xs-2" style="padding: 0">
                                     <div style="height: 80px; margin-top: 10px">
