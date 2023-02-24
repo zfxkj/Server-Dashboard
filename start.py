@@ -40,12 +40,14 @@ def get_info():
 
         # 获取cpu类型
         cpu_model = platform.processor()
+        if cpu_model == "":
+            output = subprocess.check_output(['cat', '/proc/cpuinfo']).decode('utf-8')
+            for line in output.split('\n'):
+                if 'model name' in line:
+                    cpu_model = line.split(':')[1].strip()
 
         # 获取cpu名称
-        try:
-            cpu_name = platform.platform()
-        except:
-            cpu_name = "CPU名称时无法获取"
+        cpu_name = platform.platform()
 
         # 获取CPU温度
         try:
