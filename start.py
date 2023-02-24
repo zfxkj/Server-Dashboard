@@ -185,5 +185,5 @@ def get_info():
     emit('response', data)
 
 if __name__ == '__main__':
-    socketio.run(app, host='0.0.0.0', port=5555, debug=True)
+    socketio.run(app, host='::', port=5555, debug=False)
 
