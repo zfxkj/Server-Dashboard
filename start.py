@@ -1,5 +1,5 @@
 # server.py
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify, request
 import psutil,os,datetime,platform,getpass,socket,subprocess
 
 app = Flask(__name__)
@@ -58,7 +58,8 @@ def get_info():
 
         # 获取本机IP
         hostname = socket.gethostname()
-        ip = socket.gethostbyname(hostname)
+        # ip = socket.gethostbyname(hostname)
+        ip = request.remote_addr
 
         # 获取用户名
         username = getpass.getuser()
