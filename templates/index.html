@@ -42,6 +42,7 @@
                     $("#uptime_date").text(data.uptime_date);
                     $("#username").text(data.username);
                     $("#ip").text(data.ip);
+                    $("#ip_type").text(data.ip_type);
                     $("#hostname").text(data.hostname);
                     $("#cpu-freq").text(data.cpu_freq);
                     $("#cpu-count").text(data.cpu_sums);
@@ -151,8 +152,8 @@
                   background-color: #cefca3;
                   border-radius: 3px;
                 ">
-                            <div class="label">ipv4</div>
-                            <div id="ip" style="font-size: 150%; font-weight: bolder"></div>
+                            <div class="label" id="ip_type"></div>
+                            <div id="ip" style="font-size: 150%; font-weight: bolder; word-wrap: break-word;"></div>
                         </div>
                         <div class="text-center" style="
                   margin: 20px;

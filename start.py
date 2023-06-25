@@ -60,6 +60,10 @@ def get_info():
         hostname = socket.gethostname()
         # ip = socket.gethostbyname(hostname)
         ip = request.headers['X-Real-IP']
+        if ":" in str(ip):
+            ip_type = "IPV6"
+        else:
+            ip_type = "IPV4"
 
         # 获取用户名
         username = getpass.getuser()
@@ -159,6 +163,7 @@ def get_info():
             'uptime_date': uptime_date,
             'username': username,
             'ip': ip,
+            'ip_type': ip_type,
             'hostname': hostname,
             'cpu_freq': freq,
             'cpu_sums': num_cpus,
