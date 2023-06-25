@@ -59,7 +59,7 @@ def get_info():
         # 获取本机IP
         hostname = socket.gethostname()
         # ip = socket.gethostbyname(hostname)
-        ip = request.remote_addr
+        ip = request.headers['X-Real-IP']
 
         # 获取用户名
         username = getpass.getuser()
